@@ -1,15 +1,16 @@
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import swaggerOptions from "./swagger/swaggerOptions.ts";
-import user from "./dataBase/user.ts";
-import type { UserTable } from "../src/types/dataBase.ts";
 import routes from "./Routes/index.ts";
+import cors from "cors";
 
 function app() {
   try {
     const app = express();
 
     app.use(express.json());
+
+    app.use(cors());
 
     app.get("/", (req, res) => {
       res.send({ conexao: true });

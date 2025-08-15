@@ -7,16 +7,55 @@ const usersRouter = Router();
 usersRouter.get(
   "/",
   async (req: Request, res: Response, next: NextFunction) => {
-    const dadosUsuario: any = await user.getDataUser(20);
-
-    if (dadosUsuario !== undefined) {
-      res.send({
-        nome: dadosUsuario.NOME,
-        email: dadosUsuario.EMAIL,
-      });
-    } else {
-      res.send({ message: "Falha na captura do usuário" });
+    interface ObjetoRetorno {
+      message: string;
+      dadosUsuario?: {
+        nome: string;
+        email: string;
+      };
     }
+
+    const headers = req.headers;
+
+    const objetoRetorno: ObjetoRetorno = {
+      message: "",
+    };
+    let status = 200;
+
+    if (!headers) throw new Error("Falha ao localizar o headers");
+
+    const token =
+      headers.token && typeof headers.token === "string" ? headers.token : "";
+
+    const verificacaoToken = await user.verificToken(token);
+
+    if (verificacaoToken) {
+      const idUsuario = await user.getIdByToken(token);
+
+      if (idUsuario) {
+        const dadosUsuario: any = await user.getDataUser(idUsuario);
+
+        if (dadosUsuario !== undefined) {
+          objetoRetorno.message = "Usuário encontrado"
+
+          objetoRetorno.dadosUsuario = {
+            nome: dadosUsuario.NOME,
+            email: dadosUsuario.EMAIL,
+          };
+        } else {
+          status = 500;
+          objetoRetorno.message = "Falha na captura do usuário";
+        }
+      } else {
+        status = 500;
+        objetoRetorno.message = "Falha na captura do usuário";
+      }
+    } else {
+      status = 401;
+      objetoRetorno.message = "Token inválido";
+    }
+
+    res.status(status).send(objetoRetorno);
   }
 );
 
@@ -55,7 +94,7 @@ usersRouter.get(
   "/authenticate",
   async (req: Request, res: Response, next: NextFunction) => {
     const headers = req.headers;
-    
+
     if (!headers) throw new Error("Falha ao localizar o headers");
 
     const email =
