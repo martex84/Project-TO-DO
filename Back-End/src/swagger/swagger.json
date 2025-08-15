@@ -1,0 +1,25 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Hello World",
+    "version": "1.0.0",
+    "description": "Exemplo simples de API com Express + TypeScript + Swagger"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Retorna uma mensagem Hello World",
+        "responses": {
+          "200": {
+            "description": "Mensagem retornada com sucesso",
+            "content": {
+              "application/json": {
+                "example": { "message": "Hello World com Express e TypeScript 🚀" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

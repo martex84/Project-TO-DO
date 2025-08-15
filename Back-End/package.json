@@ -1,0 +1,33 @@
+{
+  "name": "back-end-to-do",
+  "version": "1.0.0",
+  "description": "Back-end to project To-Do",
+  "license": "ISC",
+  "author": "Martex84",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cls && tsx watch src/index.ts",
+    "test": "cls && jest --verbose"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
+    "swagger-ui-express": "^5.0.1",
+    "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/jest": "^30.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.2.1",
+    "@types/supertest": "^6.0.3",
+    "@types/swagger-ui-express": "^4.1.8",
+    "jest": "^30.0.5",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.1",
+    "tsx": "^4.20.4"
+  }
+}
