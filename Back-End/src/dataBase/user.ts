@@ -71,27 +71,6 @@ async function checkUser(email: string, password: string): Promise<boolean> {
     }).catch(()=> {
       resolve(false)
     })
-    // dataBase
-    //   .getDataBase()
-    //   .then((db) => {
-    //     db.get(`SELECT ID FROM PESSOA WHERE EMAIL = ? AND PASSWORD = ?`, [
-    //       email,
-    //       password,
-    //     ])
-    //       .then((dados) => {
-    //         resolve(!(dados === undefined || dados === null));
-    //       })
-    //       .catch((error) => {
-    //         console.error("Falha ao executar a busca");
-
-    //         reject(error);
-    //       });
-    //   })
-    //   .catch((error) => {
-    //     console.log("Falha ao tentar realizar a execução" + "\n\n" + error);
-
-    //     reject(error);
-    //   });
   });
 }
 
