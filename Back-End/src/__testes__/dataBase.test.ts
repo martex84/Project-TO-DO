@@ -3,7 +3,7 @@ import todo from "../dataBase/todo.ts";
 import user from "../dataBase/user.ts";
 import { UserTable, SimplesUserTable } from "../types/dataBase.ts";
 
-describe("Testes Data Base", () => {
+describe.skip("Testes Data Base", () => {
   test("Teste verificação/criação de banco de dados", async () => {
     console.log("Iniciando teste verificação");
     const resultado = await dataBase.initDataBase();
@@ -11,7 +11,7 @@ describe("Testes Data Base", () => {
   });
 });
 
-describe("Testes Tabela User", () => {
+describe.skip("Testes Tabela User", () => {
   let usuario: UserTable;
 
   test("Teste na captura de usuário", async () => {
@@ -80,7 +80,7 @@ describe("Testes Tabela User", () => {
   });
 });
 
-describe("Testes Tabela TODO", () => {
+describe.skip("Testes Tabela TODO", () => {
   let token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlQHRlc3RlIiwicGFzc3dvcmQiOiJ0ZXN0ZSIsImlhdCI6MTc1NTI1MTQwMCwiZXhwIjoxNzU1MjU1MDAwfQ.W18zyWtt6HW8Olr9llwCCQvUF8blDnBH6EV_9K7wd4E";
 

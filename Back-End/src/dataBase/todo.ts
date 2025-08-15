@@ -60,15 +60,15 @@ async function createTaskTodo(
  * @param idPessoa Recebe o id que irá realizar a pesquisa
  * @returns Retorna os dados de nome e e-mail do usuário em caso de sucesso, em caso de falha irá retornar undefined
  */
-async function getTask(idPessoa: number): Promise<SimpleTodo | undefined> {
+async function getTask(idPessoa: number): Promise<SimpleTodo[] | undefined> {
   //Verifica usuário por meio do id e traz todos os dados
   //Verifica usário por meio do e-mail e senha e retorna o id
   return new Promise((resolve, reject) => {
     dataBase
       .getDataBase()
       .then((db) => {
-        db.get(`SELECT DESCRICAO, STATUS FROM TODO WHERE CONCLUIDO = 0 AND ID_PESSOA = ?`, [idPessoa])
-          .then((dados: SimpleTodo) => {
+        db.all(`SELECT DESCRICAO, STATUS FROM TODO WHERE CONCLUIDO = 0 AND ID_PESSOA = ?`, [idPessoa])
+          .then((dados: SimpleTodo[]) => {
             if (!dados) resolve(undefined);
 
             resolve(dados);

@@ -27,11 +27,11 @@ usersRouter.post(
 
     if (!headers) throw new Error("Falha ao localizar o headers");
 
-    headers.nome =
+    const nome =
       headers.nome && typeof headers.nome === "string" ? headers.nome : "";
-    headers.email =
+    const email =
       headers.email && typeof headers.email === "string" ? headers.email : "";
-    headers.password =
+    const password =
       headers.password && typeof headers.password === "string"
         ? headers.password
         : "";
@@ -40,11 +40,7 @@ usersRouter.post(
       if (!headers[key]) throw new Error("O campo '" + key + "' está vazio!");
     });
 
-    const criacaoUsuario = await user.createUser(
-      headers.nome,
-      headers.email,
-      headers.password
-    );
+    const criacaoUsuario = await user.createUser(nome, email, password);
 
     let mensagem;
 
@@ -59,7 +55,7 @@ usersRouter.get(
   "/authenticate",
   async (req: Request, res: Response, next: NextFunction) => {
     const headers = req.headers;
-
+    
     if (!headers) throw new Error("Falha ao localizar o headers");
 
     const email =
@@ -69,25 +65,20 @@ usersRouter.get(
         ? headers.password
         : "";
 
-
-
     //Verifica se o e-mail e senha do usuário já está cadastrado no sistema
-    const resultadoBusca = await user.checkUser(
-      email,
-      password
-    );
+    const resultadoBusca = await user.checkUser(email, password);
 
     let objetoRetorno = {
       message: "",
-      token: ""
+      token: "",
     };
     let status;
 
     //Usuário encontrado
     if (resultadoBusca) {
-       const token = await user.createToken(email,password);
+      const token = await user.createToken(email, password);
 
-      if(!token) throw new Error("Falha na criação do token")
+      if (!token) throw new Error("Falha na criação do token");
 
       objetoRetorno.message = "Usuário Encontrado";
       objetoRetorno.token = token;
