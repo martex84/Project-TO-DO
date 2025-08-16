@@ -81,7 +81,7 @@ todoRouter.post(
       const idUsuario = await user.getIdByToken(token);
 
       status = 500;
-      objetoRetorno.message = "Falha na busca da task";
+      objetoRetorno.message = "Falha na criação da task";
 
       if (idUsuario) {
         const criacaoTask = await todo.createTaskTodo(
