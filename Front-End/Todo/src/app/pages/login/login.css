@@ -1,0 +1,39 @@
+.containerLogin{
+    width: 400px;
+    height: 400px;
+}
+
+.inputLogin{
+    width: 300px;
+    height: 30px;
+    border-radius: 5px;
+    border-width: 1px;
+    padding: 2px;
+}
+
+.containerInputLogin{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.buttonLogin{
+    width: 100px;
+    height: 30px;
+    font-size: 15px;
+    border-radius: 10px;
+    border-width: 1px;
+    cursor: pointer;
+}
+
+.containerButton{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.buttonClean{
+    border: 0;
+    cursor: pointer;
+}

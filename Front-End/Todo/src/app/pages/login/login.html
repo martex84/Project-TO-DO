@@ -1,3 +1,15 @@
-<input type="text" id="name" placeholder="Digite seu nome">
-<input type="text" id="password" placeholder="Digite sua senha">
-<button (click)="autenticarUsuario()">Logar</button>
+<div class="containerLogin containerPadrao">
+    <h1>Login</h1>
+    <div class="containerInputLogin">
+        <span>Nome</span>
+        <input class="inputLogin" (input)="getEmail($event)"  type="text" id="name" placeholder="Digite seu nome">
+    </div>
+    <div class="containerInputLogin">
+        <span>Senha</span>
+        <input class="inputLogin" (input)="getPassword($event)" type="password" id="password" placeholder="Digite sua senha">
+    </div>
+    <div class="containerButton">
+        <button class="buttonLogin" (click)="autenticarUsuario()">Logar</button>
+        <button class="buttonClean" (click)="cadastrar()">Cadastrar</button>
+    </div>
+</div>

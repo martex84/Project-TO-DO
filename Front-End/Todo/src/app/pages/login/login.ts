@@ -1,49 +1,64 @@
 import { Component, inject } from '@angular/core';
 import { UserApi } from '../../services/User/user-api';
 import { TaskApi } from '../../services/Task/task-api';
+import {ɵInternalFormsSharedModule } from '@angular/forms';
+import { Authenticate } from '../../services/Authenticate/authenticate';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [ɵInternalFormsSharedModule],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrl: './login.css',
 })
 export class Login {
   private user = inject(UserApi);
   private task = inject(TaskApi);
+  private authenticate = inject(Authenticate);
 
-   autenticarUsuario(){
-    console.log(this.user.autenticar().subscribe({
-      next: (data) => console.log(data),
-      error: err => console.error(err)
-    }))
+  constructor(private router: Router){}
+
+  dadosInput = {
+    email: "",
+    password: ""
   }
 
-  getDadosUsuario(){
-    console.log(this.user.getDadosUsuario().subscribe({
-      next: (data) => console.log(data.dadosUsuario.nome),
-      error: err => console.error(err)
-    }))
+  autenticarUsuario() {
+    if (!this.dadosInput.email) return alert('Digite o e-mail');
+    if (!this.dadosInput.password) return alert('Digite a senha');
+
+    this.user.autenticar(this.dadosInput.email, this.dadosInput.password).subscribe({
+        next: (data) => {
+
+          const token = data.token;
+
+          if(!token) return console.error("Falha ao captar o token");
+
+          this.authenticate.setToken(token);
+
+          this.router.navigate(['/task']);
+        },
+        error: (err) => console.error(err),
+      })
   }
 
-  setUsuario(){
-    console.log(this.user.criarUsuario().subscribe({
-      next: data => console.log(data),
-      error: err => console.error(err)
-    }))
+  getEmail(event: Event) {
+    const target = event.target as HTMLInputElement;
+
+    if(!target) throw new Error("Falha ao captar o target")
+
+    this.dadosInput.email = target.value;
   }
 
-  getTask(){
-    console.log(this.task.getTask().subscribe({
-      next: data => console.log(data),
-      error: err => console.error(err)
-    }))
+  getPassword(event: Event) {
+    const target = event.target as HTMLInputElement;
+
+    if(!target) throw new Error("Falha ao captar o target")
+
+    this.dadosInput.password = target.value;
   }
 
-  criarTask(){
-    console.log(this.task.criarTask().subscribe({
-      next: data => console.log(data),
-      error: err => console.error(err)
-    }))
+  cadastrar(){
+    this.router.navigate(['/cadastro']);
   }
 }

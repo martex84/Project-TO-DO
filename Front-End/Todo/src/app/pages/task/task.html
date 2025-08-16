@@ -1,13 +1,48 @@
-<span>{{dadosUsuario.nome}}</span>
+<div class="containerTask">
+  <div class="containerPadrao cotainerNome">
+    <span>Bem vindo/a {{ dadosUsuario.nome }}</span>
+  </div>
 
-<div>
-    <button (click)="getTask()">Buscar Task</button>
-</div>
+  <div class="cadastroTask containerPadrao">
+    <h3>Cadastro de Task</h3>
+    <input
+      class="inputTask"
+      (input)="getDescricaoInputTask($event)"
+      type="text"
+      id="descricaoTask"
+      placeholder="Digite a descrição da task"
+    />
+    <input
+      class="inputTask"
+      (input)="getStatusInputTask($event)"
+      type="text"
+      id="status"
+      placeholder="Digite a priodidade da task"
+    />
+    <button class="buttonTask" (click)="criarTask()">Cadastrar Task</button>
+  </div>
 
-<div>
-    <button (click)="criarTask()">Cadastrar Task</button>
-</div>
-
-<div>
-    Lista Task
+  <div class="containerPadrao containerLista">
+    <button class="buttonTask" (click)="getTask()">Buscar Task</button>
+    <div class="containerTabelaLista">
+        <table class="tabelaTask">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Descrição</th>
+            <th>Prioridade</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of listaTask; track $index) {
+          <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.descricao }}</td>
+            <td>{{ item.status }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
