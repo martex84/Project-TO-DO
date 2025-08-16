@@ -1,0 +1,34 @@
+<div class="containerPadrao containerCadstro">
+    <h1>Cadastro</h1>
+  <div class="containerInputCadastro">
+    <span>Nome</span>
+    <input
+      class="inputCadastro"
+      (input)="getNomeInput($event)"
+      type="text"
+      id="nomeCadastro"
+      placeholder="Digite seu nome"
+    />
+  </div>
+  <div class="containerInputCadastro">
+    <span>E-mail</span>
+    <input
+      class="inputCadastro"
+      (input)="getEmailInput($event)"
+      type="email"
+      id="emailCadastro"
+      placeholder="Digite seu e-mail"
+    />
+  </div>
+  <div class="containerInputCadastro">
+    <span>Senha</span>
+    <input
+      class="inputCadastro"
+      (input)="getPasswordInput($event)"
+      type="password"
+      id="senhaCadastro"
+      placeholder="Digite sua senha"
+    />
+  </div>
+  <button class="buttonCadastro" (click)="setUsuario()">Cadastrar</button>
+</div>

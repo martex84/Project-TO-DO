@@ -1,0 +1,7 @@
+# Pastas ignoradas
+node_modules/
+.vscode/
+
+# Arquivos ignorados
+TODO.mkd
+*.db
