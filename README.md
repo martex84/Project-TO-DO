@@ -69,7 +69,7 @@ Por padrão:
 
 ---
 
-📝 Próximas Evoluções do Projeto
+## 📝 Próximas Evoluções do Projeto
 
 1. Aprimorar o visual do front-end: Adotar um estilo mais moderno, responsivo e fluido.
 2. Criptografia de senhas: Garantir que as senhas sejam armazenadas de forma segura no banco de dados.
