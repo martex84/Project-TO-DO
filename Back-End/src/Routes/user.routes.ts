@@ -36,7 +36,7 @@ usersRouter.get(
         const dadosUsuario: any = await user.getDataUser(idUsuario);
 
         if (dadosUsuario !== undefined) {
-          objetoRetorno.message = "Usuário encontrado"
+          objetoRetorno.message = "Usuário encontrado";
 
           objetoRetorno.dadosUsuario = {
             nome: dadosUsuario.NOME,
@@ -62,6 +62,15 @@ usersRouter.get(
 usersRouter.post(
   "/",
   async (req: Request, res: Response, next: NextFunction) => {
+    interface ObjetoRetorno {
+      mensagem: string;
+      token?: string;
+    }
+
+    const objetoRetorno: ObjetoRetorno = {
+      mensagem: "Falha na criação do usuário!",
+    };
+
     const headers = req.headers;
 
     if (!headers) throw new Error("Falha ao localizar o headers");
@@ -81,12 +90,16 @@ usersRouter.post(
 
     const criacaoUsuario = await user.createUser(nome, email, password);
 
-    let mensagem;
+    if (criacaoUsuario) {
+      const token = await user.createToken(email, password);
 
-    if (criacaoUsuario) mensagem = "Usuário criado com sucesso!";
-    else mensagem = "Falha na criação do usuário!";
+      if (token) {
+        objetoRetorno.mensagem = "Usuário criado com sucesso!";
+        objetoRetorno.token = token;
+      }
+    }
 
-    res.send({ mensagem });
+    res.send(objetoRetorno);
   }
 );
 
