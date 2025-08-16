@@ -69,6 +69,18 @@ Por padrão:
 
 ---
 
+📝 Próximas Evoluções do Projeto
+
+1. Aprimorar o visual do front-end: Adotar um estilo mais moderno, responsivo e fluido.
+2. Criptografia de senhas: Garantir que as senhas sejam armazenadas de forma segura no banco de dados.
+3. Containerização: Encapsular backend e frontend em containers, facilitando a implantação e integração com outros sistemas.
+4. Conclusão de tarefas: Adicionar botão para concluir tasks e implementar a rota correspondente no backend.
+5. Logout: Incluir botão de deslogar nas telas do sistema.
+6. Recuperação de senha: Implementar funcionalidade para recuperação de senha.
+7. Verificação de tasks concluídas: Adicionar botão para filtrar ou visualizar tasks já concluídas.
+8. Customização de propriedades: Permitir que o usuário escolha ou configure propriedades adicionais das tasks.
+9. Testes no front-end: Criar testes automatizados para garantir maior confiabilidade da interface.
+
 ## 📖 Documentação
 - [Node.js](https://nodejs.org/)  
 - [TypeScript](https://www.typescriptlang.org/)  
