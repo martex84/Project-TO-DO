@@ -68,10 +68,21 @@ async function getTask(idPessoa: number): Promise<SimpleTodo[] | undefined> {
       .getDataBase()
       .then((db) => {
         db.all(`SELECT DESCRICAO, STATUS FROM TODO WHERE CONCLUIDO = 0 AND ID_PESSOA = ?`, [idPessoa])
-          .then((dados: SimpleTodo[]) => {
+          .then((dados: any[]) => {
             if (!dados) resolve(undefined);
 
-            resolve(dados);
+            const listaDados : SimpleTodo[] = [];
+
+            if(!Array.isArray(dados)) return resolve(undefined)
+
+            dados.forEach(item => {
+              listaDados.push({
+                descricao: item["DESCRICAO"],
+                status: item["STATUS"]
+              })
+            })
+
+            resolve(listaDados);
           })
           .catch((error) => {
             console.error("Falha ao executar a busca");
