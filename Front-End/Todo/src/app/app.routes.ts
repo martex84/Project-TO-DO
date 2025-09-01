@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { Login } from './pages/login/login';
-import { Cadastro } from './pages/cadastro/cadastro';
-import { Task } from './pages/task/task';
+import { Login } from '../subdomains/user/containers/login/login';
+import { Cadastro } from '../subdomains/user/containers/cadastro/cadastro';
+import { Task } from '../subdomains/task/containers/task/task';
 
 export const routes: Routes = [
   {

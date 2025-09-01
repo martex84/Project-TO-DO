@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { UserApi } from '../../services/User/user-api';
-import { TaskApi } from '../../services/Task/task-api';
+import { UserApi } from '@shared/services/User/user-api';
+import { TaskApi } from '@shared/services/Task/task-api';
 import {ɵInternalFormsSharedModule } from '@angular/forms';
-import { Authenticate } from '../../services/Authenticate/authenticate';
+import { Authenticate } from '@shared/services/Authenticate/authenticate';
 import { Router } from '@angular/router';
 
 @Component({

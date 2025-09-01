@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { UserApi } from '../../services/User/user-api';
+import { UserApi } from '@shared/services/User/user-api';
 import { Router } from '@angular/router';
-import { Authenticate } from '../../services/Authenticate/authenticate';
+import { Authenticate } from '@shared/services/Authenticate/authenticate';
 
 @Component({
   selector: 'app-cadastro',

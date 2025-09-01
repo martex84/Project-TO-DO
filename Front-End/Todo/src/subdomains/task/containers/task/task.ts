@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { TaskApi } from '../../services/Task/task-api';
-import { UserApi } from '../../services/User/user-api';
+import { TaskApi } from '@shared/services/Task/task-api';
+import { UserApi } from '@shared/services/User/user-api';
 
 interface DadosTask {
   id: number,
