@@ -1,0 +1,4 @@
+export enum AMBIENTES{
+    DEVELOPMENT = "DEVELOPMENT",
+    TEST = "TEST"
+}

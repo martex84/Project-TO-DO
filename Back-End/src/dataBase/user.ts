@@ -1,4 +1,4 @@
-import dataBase from "./index.ts";
+import dataBase from "./connectionAntiga.ts";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import type { DadosToken, SimplesUserTable } from "../types/dataBase.ts";
 

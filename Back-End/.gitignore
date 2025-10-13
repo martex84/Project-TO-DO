@@ -1,0 +1,8 @@
+# Ignora arquivos .env
+.env*
+
+# Permite os arquivos .env de exemplos
+!.env.example*
+
+# Ignora o banco de dados
+*.sqlite

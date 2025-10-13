@@ -1,5 +1,5 @@
 import { SimpleTodo } from "../types/dataBase.ts";
-import dataBase from "./index.ts";
+import dataBase from "./connectionAntiga.ts";
 
 /**
  * Função responsável por retornar a query para realizar a criação da tabela TODO
