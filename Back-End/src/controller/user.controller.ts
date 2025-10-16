@@ -31,7 +31,7 @@ async function createUser(req: Request): Promise<ObjetoRetornoCreateUser> {
       if (!headers[key]) throw new Error("O campo '" + key + "' está vazio!");
     });
 
-    const user = await userService.createUserService({
+    const user = await userService.createUser({
       email: email,
       nome: nome,
       password: password,

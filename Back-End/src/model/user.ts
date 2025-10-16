@@ -1,5 +1,4 @@
 import { Model, DataType, Optional, DataTypes, Sequelize } from "sequelize";
-import sequelize from "../dataBase/connection.ts";
 
 import type { UserAtributes } from "../types/dataBase.ts";
 

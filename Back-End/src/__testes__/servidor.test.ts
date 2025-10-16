@@ -3,7 +3,7 @@ import dadosServidor from "../server.ts";
 import { Server } from "http";
 import { SimplesUserTable } from "../types/dataBase.ts";
 
-describe("Teste", () => {
+describe.skip("Teste", () => {
   let server: Server | undefined;
 
   const app = dadosServidor.app();

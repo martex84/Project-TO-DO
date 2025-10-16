@@ -1,9 +1,9 @@
 import type { Options, Dialect } from "sequelize";
-import {EnvDevelopment} from "../enums/envs"
+import {envVariables} from "../enums/envs"
 import env from "../env";
 
 function getDialect () : Dialect{
-    const valorEnv = env(EnvDevelopment.DIALECT).toLowerCase();
+    const valorEnv = env(envVariables.DIALECT).toLowerCase();
 
     switch(valorEnv){
         case "sqlite":{
@@ -21,8 +21,9 @@ function getConfig() : Options{
 
     const options : Options = {
         dialect: dialect,
-        storage: env(EnvDevelopment.STORAGE),
-        logging: false
+        storage: env(envVariables.STORAGE),
+        logging: false,
+        database: env(envVariables.NAME)
     }
 
     return options

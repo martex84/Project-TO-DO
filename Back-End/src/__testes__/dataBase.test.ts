@@ -1,120 +1,241 @@
-import dataBase from "../dataBase/connectionAntiga.ts";
-import todo from "../dataBase/todo.ts";
-import user from "../dataBase/user.ts";
-import { UserTable, SimplesUserTable } from "../types/dataBase.ts";
+import { Sequelize } from "sequelize";
+import { getSequelize, initDb, removeDb } from "../dataBase/connection.ts";
+import { carregarEnv } from "../env";
+import userService from "../service/user.service.ts";
+import todoService from "../service/todo.service.ts";
+import { envVariables } from "../enums/envs.ts";
+import valorEnv from "../env";
 
-describe.skip("Testes Data Base", () => {
-  test("Teste verificação/criação de banco de dados", async () => {
+interface dadosUsuario {
+  nome: string;
+  email: string;
+  password: string;
+}
+
+describe("Testes Data Base", () => {
+  afterAll(async () => {
+    removeDb();
+  });
+
+  test("DATA BASE - Carregamento dotenv", async () => {
+    const resutado = carregarEnv();
+
+    expect(resutado).toBeTruthy();
+  });
+
+  test("DATA BASE - Teste verificação/criação de banco de dados", async () => {
     console.log("Iniciando teste verificação");
-    const resultado = await dataBase.initDataBase();
+
+    await carregarEnv();
+
+    const resultado = await initDb();
+
     expect(resultado).toBeTruthy();
   });
 });
 
-// describe.skip("Testes Tabela User", () => {
-//   let usuario: UserTable;
+describe("Testes Tabelas", () => {
+  let idUsuario: number | undefined;
 
-//   test("Teste na captura de usuário", async () => {
-//     console.log("Iniciando a verificação de captura do primeiro usuário");
+  let sequelize: Sequelize | null = null;
 
-//     const objeto = await user.getDataUser(1);
+  let dadosUsuario: dadosUsuario = {
+    nome: "",
+    email: "",
+    password: "",
+  };
 
-//     expect(
-//       objeto === undefined || (objeto && Object.keys(objeto))
-//     ).toBeTruthy();
-//   });
+  beforeAll(async () => {
+    try {
+      console.log("Preprando configurações para os testes!");
 
-//   test("Teste na checkagem do usuário", async () => {
-//     console.log("Iniciando a verificação da checagem do usuário");
+      await carregarEnv();
 
-//     const objeto = await user.checkUser("teste@teste", "teste");
+      //Aplicar uma camada de verificação na captação dos dados do env
+      dadosUsuario = {
+        nome: valorEnv(envVariables.DADOS_USUARIO_TESTE_NOME),
+        email: valorEnv(envVariables.DADOS_USUARIO_TESTE_EMAIL),
+        password: valorEnv(envVariables.DADOS_USUARIO_TESTE_PASSWORD),
+      };
 
-//     expect(typeof objeto === "boolean").toBeTruthy();
-//   });
+      sequelize = getSequelize();
 
-//   test.skip("Teste na criação de usuário", async () => {
-//     console.log("Iniciando a verificação da criação do usuário");
+      await initDb(sequelize);
 
-//     const resultado = await user.createUser(
-//       "testeNome",
-//       "teste@teste",
-//       "teste"
-//     );
+      //Criando usuário teste
+      idUsuario = await userService.createUser(dadosUsuario);
 
-//     expect(resultado).toBeTruthy();
-//   });
+      if (!idUsuario) throw new Error("Falha na captura do id do usuário");
+    } catch (error) {
+      console.error(
+        "Erro na preparação das configurações para os testes!" + "\n" + error
+      );
+    }
+  });
 
-//   test("Teste na criação do token de acesso", async () => {
-//     console.log("Inicio da criação do token de acesso!");
-//     const token = await user.createToken("email", "senha");
+  afterAll(async () => {
+    try {
+      console.log("Preparando os processo para o encerramento dos testes!");
 
-//     console.log("token: '" + token + "'");
+      if (!sequelize) throw new Error("Falha ao localizar o sequeliza aberto");
 
-//     expect(typeof token === "string").toBeTruthy();
-//   });
+      await removeDb(sequelize);
+    } catch (error) {
+      console.error(
+        "Falha no preparo dos processo para o encerramento dos testes!" +
+          "\n" +
+          error
+      );
+    }
+  });
 
-//   test("Teste na verificação do token de acesso", async () => {
-//     console.log("Inicio da verificação do token de acesso!");
+  /**
+   * TESTES USER
+   */
 
-//     const token = await user.createToken("email", "senha");
+  test("USER - Teste na captura de usuário", async () => {
+    console.log("Iniciando a verificação de captura de um usuário teste");
 
-//     if (!token) throw new Error("Falha na captura do token");
+    if (!idUsuario) throw new Error("Falha na captura do id do usuário");
 
-//     const resultado = await user.verificToken(token);
+    const busca = await userService.getDataUser(idUsuario);
 
-//     expect(resultado).toBeTruthy();
-//   });
+    expect(!(busca === undefined || busca === null)).toBeTruthy();
+  });
 
-//   test("Teste na verificação do id do usuário por meio do token de acesso", async () => {
-//     console.log(
-//       "Inicio da verificação do id do usuário por meio do token de acesso!"
-//     );
+  test("USER - Teste na checkagem do usuário", async () => {
+    console.log("Iniciando a verificação da checagem do usuário");
 
-//     const token = await user.createToken("teste@teste", "teste");
+    if (!idUsuario) throw new Error("Falha na captura do id do usuário");
 
-//     if (!token) throw new Error("Falha na captura do token");
+    const retorno = await userService.checkUser(
+      dadosUsuario.email,
+      dadosUsuario.password
+    );
 
-//     const resultado = await user.getIdByToken(token);
+    expect(typeof retorno === "boolean").toBeTruthy();
+  });
 
-//     expect(resultado).toBeTruthy();
-//   });
-// });
+  test("USER - Teste na criação de usuário", async () => {
+    console.log("Iniciando a verificação da criação do usuário");
 
-// describe.skip("Testes Tabela TODO", () => {
-//   let token =
-//     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlQHRlc3RlIiwicGFzc3dvcmQiOiJ0ZXN0ZSIsImlhdCI6MTc1NTI1MTQwMCwiZXhwIjoxNzU1MjU1MDAwfQ.W18zyWtt6HW8Olr9llwCCQvUF8blDnBH6EV_9K7wd4E";
+    //Remove usuários antigos
+    if (!sequelize) throw new Error("Falha ao localizar o sequelize");
 
-//   test("Teste na captura de task", async () => {
-//     console.log(
-//       "Iniciando a verificação de captura de task do usuário do token"
-//     );
+    await removeDb(sequelize);
 
-//     const idUsuario = await user.getIdByToken(token);
+    const resultado = await userService.createUser(dadosUsuario);
 
-//     if (!idUsuario)
-//       throw new Error("Falha ao localizar o usuário a partir do seu token");
+    expect(resultado).toBeTruthy();
+  });
 
-//     const objeto = await todo.getTask(idUsuario);
+  test("USER - Teste na criação do token de acesso", async () => {
+    console.log("Inicio da criação do token de acesso!");
 
-//     expect(
-//       objeto === undefined || (objeto && Object.keys(objeto))
-//     ).toBeTruthy();
-//   });
+    const token = await userService.createToken({
+      email: dadosUsuario.email,
+      password: dadosUsuario.password,
+    });
 
-//   test("Teste na criação de task", async () => {
-//     console.log("Iniciando a verificação da criação do task");
+    if (!token || token.length === 0)
+      throw new Error("Falha na criação do token de acesso!");
 
-//     const idUsuario = await user.getIdByToken(token);
+    expect(typeof token === "string").toBeTruthy();
+  });
 
-//     if (!idUsuario)
-//       throw new Error("Falha ao localizar o usuário a partir do seu token");
+  test("USER - Teste na verificação do token de acesso", async () => {
+    console.log("Inicio da verificação do token de acesso!");
 
-//     const resultado = await todo.createTaskTodo(
-//       idUsuario,
-//       "testeDescrição",
-//       "testeStatus"
-//     );
+    const token = await userService.createToken({
+      email: dadosUsuario.email,
+      password: dadosUsuario.password,
+    });
 
-//     expect(resultado).toBeTruthy();
-//   });
-// });
+    if (!token || token.length === 0)
+      throw new Error("Falha na criação do token de acesso!");
+
+    const resultado = await userService.verificToken(token);
+
+    expect(resultado).toBeTruthy();
+  });
+
+  test("USER - Teste na verificação do id do usuário por meio do token de acesso", async () => {
+    console.log(
+      "Inicio da verificação do id do usuário por meio do token de acesso!"
+    );
+
+    const token = await userService.createToken({
+      email: dadosUsuario.email,
+      password: dadosUsuario.password,
+    });
+
+    if (!token || token.length === 0)
+      throw new Error("Falha na criação do token de acesso!");
+
+    const resultado = await userService.getIdByToken(token);
+
+    expect(resultado).toBeTruthy();
+  });
+
+  /**
+   * TESTES USER
+   */
+
+  /**
+   * TESTES TODO
+   */
+
+  test("TODO - Teste na captura de task", async () => {
+    console.log(
+      "Iniciando a verificação de captura de task do usuário do token"
+    );
+
+    const token = await userService.createToken({
+      email: dadosUsuario.email,
+      password: dadosUsuario.password,
+    });
+
+    if (!token || token.length === 0)
+      throw new Error("Falha na criação do token de acesso!");
+
+    const idUsuario = await userService.getIdByToken(token);
+
+    if (!idUsuario)
+      throw new Error("Falha ao localizar o usuário a partir do seu token");
+
+    const objeto = await todoService.getTask(idUsuario);
+
+    expect(
+      objeto === undefined || (objeto && Object.keys(objeto))
+    ).toBeTruthy();
+  });
+
+  test("TODO - Teste na criação de task", async () => {
+    console.log("Iniciando a verificação da criação do task");
+
+    const token = await userService.createToken({
+      email: dadosUsuario.email,
+      password: dadosUsuario.password,
+    });
+
+    if (!token || token.length === 0)
+      throw new Error("Falha na criação do token de acesso!");
+
+    const idUsuario = await userService.getIdByToken(token);
+
+    if (!idUsuario)
+      throw new Error("Falha ao localizar o usuário a partir do seu token");
+
+    const resultado = await todoService.createTaskTodo({
+      idPessoa: idUsuario,
+      descricao: "testeDescrição",
+      status: "testeStatus",
+    });
+
+    expect(resultado).toBeTruthy();
+  });
+
+  /**
+   * TESTES TODO
+   */
+});

@@ -3,6 +3,11 @@ enum nameTables {
     USERS = "USERS"
 }
 
+enum dialects{
+    SQLITE = "SQLITE"
+}
+
 export {
-    nameTables
+    nameTables,
+    dialects,
 }

@@ -13,23 +13,23 @@ const secretKey = "teste";
 /**
  * Função responsável por inserir um novo usuário no sistema
  * @param {Object} dados - Recebe o objeto com os dados do usuário
- * @returns {Promise<boolean>} - Retorna true para caso o usuário tenha sido criado e false para caso não tenha
+ * @returns {Promise<number>} - Retorna true para caso o usuário tenha sido criado e false para caso não tenha
  */
-async function createUserService(dados: CreateUser): Promise<boolean> {
+async function createUser(dados: CreateUser): Promise<number | undefined> {
   try {
     const user = await User.create({
-      email: "email@email.com",
-      nome: "Nome Teste",
-      password: "SenhaTeste",
+      email: dados.email,
+      nome: dados.nome,
+      password: dados.password,
     });
 
     if (!user) throw new Error("Falha na criação do usuário");
 
-    return true;
+    return user.id;
   } catch (error) {
     console.error(error);
 
-    return false;
+    return undefined;
   }
 }
 
@@ -67,7 +67,7 @@ async function getDataUser(id: number): Promise<GetDadosSimplesUser | undefined>
   return new Promise(async (resolve) => {
     const dados = await User.findOne({where:{id: id}});
 
-    if(!dados) return undefined
+    if(!dados) return resolve(undefined)
 
     const dadosUsuario = dados.dataValues
 
@@ -75,27 +75,6 @@ async function getDataUser(id: number): Promise<GetDadosSimplesUser | undefined>
       email: dadosUsuario.email,
       nome: dadosUsuario.nome
     })
-
-    // dataBase
-    //   .getDataBase()
-    //   .then((db) => {
-    //     db.get(`SELECT NOME, EMAIL FROM PESSOA WHERE ID = ?`, [id])
-    //       .then((dados: SimplesUserTable) => {
-    //         if (!dados) resolve(undefined);
-
-    //         resolve(dados);
-    //       })
-    //       .catch((error) => {
-    //         console.error("Falha ao executar a busca");
-
-    //         reject(error);
-    //       });
-    //   })
-    //   .catch((error) => {
-    //     console.log("Falha ao tentar realizar a execução" + "\n\n" + error);
-
-    //     reject(error);
-    //   });
   });
 }
 
@@ -205,7 +184,7 @@ async function getIdByToken(token: string): Promise<number | undefined> {
 }
 
 export default {
-  createUserService,
+  createUser,
   getIdByEmailPassword,
   checkUser,
   getDataUser,
