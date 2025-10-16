@@ -51,7 +51,6 @@ describe("Testes Tabelas", () => {
 
       await carregarEnv();
 
-      //Aplicar uma camada de verificação na captação dos dados do env
       dadosUsuario = {
         nome: valorEnv(envVariables.DADOS_USUARIO_TESTE_NOME),
         email: valorEnv(envVariables.DADOS_USUARIO_TESTE_EMAIL),
